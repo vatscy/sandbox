@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backbone.js</title>
+<link rel="stylesheet" href="jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="underscore-min.js"></script>
+<script src="jquery-2.1.4.min.js"></script>
+<script src="jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="backbone-min.js"></script>
+<script src="backbone.localStorage-min.js"></script>
+<script type="text/template" id="item-template">
+	<div class="item">
+		<label><%- title %></label>
+	</div>
+</script>
+<script>
+$(function() {
+
+// モデルを定義
+var Memo = Backbone.Model.extend({
+	defaults: {
+		id: "m00",
+		title: '無題',
+		content: ''
+	}
+});
+// コレクションの定義
+var Memos = Backbone.Collection.extend({
+	localStorage: new Backbone.LocalStorage("Memos"),
+	model: Memo
+});
+// コレクションのインスタンスを生成
+var memos = new Memos();
+// localStorageから読み込む
+memos.fetch();
+
+// 項目のビュー
+var MemoView = Backbone.View.extend({
+	tagName: "li",
+	template: _.template($("#item-template").html()),
+	render: function() {
+		this.$el.html(this.template(this.model.toJSON()));
+		return this;
+	}
+});
+
+// ホーム画面のビュー
+var HomeView = Backbone.View.extend({
+	el: $("#home"),
+	initialize: function() {
+		this.$("#list").empty();
+		memos.each(function(memo) {
+			this.insertItem(memo);
+		}.bind(this));
+		this.listenTo(memos, "add", this.insertItem);
+	},
+	insertItem: function(memo) {
+		var view = new MemoView({model: memo});
+		this.$("#list").append(view.render().el);
+	},
+	render: function() {
+		this.$("#list").listview("refresh");
+		return this;
+	},
+	events: {
+		"click #add": "addNewItem"
+	},
+	addNewItem: function() {
+		var txt = $("#new").val();
+		if(txt == "") { return; }
+		var new_memo = new Memo({
+			id: "m" + Date.now(),
+			title: txt
+		});
+		memos.add(new_memo);
+		new_memo.save();
+		$("#new").val("");
+		this.$("#list").listview("refresh");
+	}
+});
+
+// About画面のビュー
+var AboutView = Backbone.View.extend({
+	el: $("#about"),
+	initialize: function() {},
+	render: function() {
+		this.$("#item_num").text(memos.length);
+		return this;
+	}
+});
+
+// ルーター
+var MemoRouter = Backbone.Router.extend({
+	routes: {
+		"": "showHome",
+		"home": "showHome",
+		"about": "showAbout"
+	},
+	showHome: function() {
+		var home_view = new HomeView();
+		home_view.render();
+	},
+	showAbout: function() {
+		var about_view = new AboutView();
+		about_view.render();
+	}
+});
+
+var memo_router = new MemoRouter();
+Backbone.history.start();
+
+});
+</script>
+
+</head>
+<body>
+
+<section id="home" data-role="page">
+	<header data-role="header" data-position="fixed">
+		<h1>メモ</h1>
+		<a href="#about" class="ui-btn ui-btn-right ui-btn-icon-left ui-icon-info ui-btn-icon-notext ui-corner-all">About</a>
+	</header>
+	<div class="content" data-role="content">
+		<p>
+			<input id="new" type="text" placeholder="メモを入力...">
+			<input id="add" type="button" data-icon="plus" value="追加">
+		</p>
+	</div>
+	<div class="content" data-role="content">
+		<ul id="list" data-role="listview"></ul>
+	</div>
+</section>
+
+<section id="about" data-role="page">
+	<header data-role="header" data-position="fixed">
+		<a href="#home" class="ui-btn ui-btn-left ui-btn-icon-left ui-icon-home ui-btn-icon-notext ui-corner-all">Home</a>
+		<h1>About</h1>
+	</header>
+	<div class="content" data-role="content">
+		<p>現在、<span id="item_num">0</span>件のメモが登録されています。</p>
+	</div>
+</section>
+
+</body>
+</html>

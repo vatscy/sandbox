@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backbone.js</title>
+<link rel="stylesheet" href="jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="underscore-min.js"></script>
+<script src="jquery-2.1.4.min.js"></script>
+<script src="jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="backbone-min.js"></script>
+<script>
+$(function() {
+
+// モデルを定義
+var Memo = Backbone.Model.extend({
+	defaults: {
+		id: "m00",
+		title: '無題',
+		content: ''
+	}
+});
+//モデルのインスタンスを3つ生成
+var memo1 = new Memo({
+	id: "m01",
+	title: "メモ1",
+	content: "あいうえお"
+});
+var memo2 = new Memo({
+	id: "m02",
+	title: "メモ2",
+	content: "かきくけこ"
+});
+var memo3 = new Memo({
+	id: "m03",
+	title: "メモ3",
+	content: "さしすせそ"
+});
+// インスタンスの中身を確認
+console.log(memo1.toJSON());
+console.log(memo2.toJSON());
+console.log(memo3.toJSON());
+
+// イベントハンドラの定義
+memo1.on("change", function(m) {
+	var msg = m.get("title") + "が変更されました。";
+	console.log(msg);
+});
+
+// モデルの値を変更
+memo1.set({content: "アイウエオ"});
+// モデルの値を取得
+console.log(memo1.get("content"));
+
+// コレクションの定義
+var Memos = Backbone.Collection.extend({
+	model: Memo
+});
+// コレクションのインスタンスを生成
+var memos = new Memos([memo1, memo2]);
+console.log(memos.length); // 2
+// コレクションにモデルを追加
+memos.add(memo3);
+console.log(memos.length); // 3
+// コレクションからモデルを削除
+memos.remove("m01");
+console.log(memos.length); // 2
+
+});
+</script>
+</head>
+<body>
+
+</body>
+</html>

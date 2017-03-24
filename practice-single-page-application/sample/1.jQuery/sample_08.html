@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>SPA Webアプリ開発入門</title>
+<link rel="stylesheet" href="jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="jquery-2.1.4.min.js"></script>
+<script src="jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script>
+$(function() {
+	var year = (new Date()).getFullYear();
+	$("small.copy>span.year").text(year);
+
+	var cont = '<p><input type="button" \
+		value="Click me!" id="ibtn" \
+		data-icon="info"></p>';
+	cont += '<p><span id="count">0</span>回 \
+		クリックされました。</p>';
+	$("#page1 div.content").html(cont);
+
+	var colors = ["Magenta", "Gold", "BlueViolet"];
+	var idx = 0;
+
+	$("#ibtn").on("click", function() {
+		var n = parseInt($("#count").text());
+		n ++;
+		$("#count").text(n);
+
+		$("#ibtn").css("background-color", colors[idx]);
+		idx = (idx + 1) % colors.length;
+	});
+});
+</script>
+</head>
+<body>
+
+<section id="page1" data-role="page">
+	<header data-role="header" data-position="fixed">
+		<h1>ページ1</h1>
+	</header>
+	<div class="content" data-role="content">
+		<p>こんにちわ</p>
+		<p><a href="#page2">次のページへ</a></p>
+	</div>
+	<footer data-role="footer" data-position="fixed">
+		<div data-role="navbar" data-iconpos="top">
+			<ul>
+				<li><a href="#page1" data-icon="home" class="ui-btn-active">ホーム</a></li>
+				<li><a href="#page2" data-icon="gear">Page 2</a></li>
+				<li><a href="#page3" data-icon="info">Page 3</a></li>
+				<li><a href="#page4" data-icon="star">Page 4</a></li>
+			</ul>
+		</div>
+		<div>
+			<small class="copy ui-mini">&copy; 2014-<span class="year">0000</span> example.jp</small>
+		</div>
+	</footer>
+</section>
+
+<section id="page2" data-role="page">
+	<header data-role="header" data-add-back-btn="true" data-back-btn-text="戻る" data-back-btn-theme="a">
+		<h1>ページ2</h1>
+	</header>
+	<div class="content" data-role="content">
+		<p>こんばんわ</p>
+		<p><a href="#page1">トップに戻る</a></p>
+	</div>
+</section>
+
+</body>
+</html>

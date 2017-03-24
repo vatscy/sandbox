@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>ReactJS sample</title>
+</head>
+
+<body>
+  <div id="container"></div>
+  <script src="http://fb.me/react-0.12.0.js"></script>
+  <script src="http://fb.me/JSXTransformer-0.12.0.js"></script>
+  <script type="text/jsx">
+    var HelloMessage = React.createClass({
+      render: function() {
+        return <div>Hello {this.props.name}</div>;
+      }
+    });
+    React.render(
+      <HelloMessage name="vatscy" />,
+      document.getElementById('container')
+    );
+  </script>
+</body>
+
+</html>

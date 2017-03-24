@@ -1,0 +1,70 @@
+<!doctype html>
+<title>ToDoアプリケーション</title>
+<script src="../bower_components/mithril/mithril.min.js"></script>
+<script src="../bower_components/linqjs/linq.js"></script>
+<script>
+  var todo = {};
+  // arrow functionはコンストラクタになれない
+  todo.Todo = function(data) {
+    this.description = m.prop(data.description);
+    this.done = m.prop(false);
+  };
+  todo.TodoList = Array;
+
+  todo.vm = {
+    init: () => {
+      //アクティブなToDoのリスト
+      todo.vm.list = new todo.TodoList();
+
+      //新しいToDoを作成する前の、入力中のToDoの名前を保持するスロット
+      todo.vm.description = m.prop('');
+
+      //ToDoをリストに登録し、ユーザが使いやすいようにdescriptionフィールドをクリアする
+      todo.vm.add = (description) => {
+        if (description()) {
+          todo.vm.list.push(new todo.Todo({
+            description: description()
+          }));
+          todo.vm.description("");
+        }
+      };
+    }
+  };
+
+  //ビュー・モデルの初期化
+  todo.vm.init();
+
+  todo.vm.description(); //[空文字列]
+
+  //Todoを登録してみる
+  todo.vm.add(todo.vm.description);
+  todo.vm.list.length; //空のdescriptionは登録できないので、0
+
+  //正しく登録できた
+  todo.vm.description("コードを書く");
+  todo.vm.add(todo.vm.description);
+  todo.vm.list.length; //1
+
+  todo.controller = () => {
+    todo.vm.init()
+  }
+
+  todo.view = () => {
+    return m("html", [
+      m("body", [
+        m("input"),
+        m("button", "追加"),
+        m("table", [
+          m("tr", [
+            m("td", [
+              m("input[type=checkbox]")
+            ]),
+            m("td", "タスクの説明"),
+          ])
+        ])
+      ])
+    ]);
+  };
+
+  m.render(document, todo.view());
+</script>

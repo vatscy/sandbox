@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backbone.js</title>
+<link rel="stylesheet" href="jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.css">
+<script src="underscore-min.js"></script>
+<script src="jquery-2.1.4.min.js"></script>
+<script src="jquery.mobile-1.4.5/jquery.mobile-1.4.5.min.js"></script>
+<script src="backbone-min.js"></script>
+<script src="backbone.localStorage-min.js"></script>
+<script>
+$(function() {
+
+// モデルを定義
+var Memo = Backbone.Model.extend({
+	defaults: {
+		id: "m00",
+		title: '無題',
+		content: ''
+	}
+});
+// コレクションの定義
+var Memos = Backbone.Collection.extend({
+	localStorage: new Backbone.LocalStorage("Memos"),
+	model: Memo
+});
+// コレクションのインスタンスを生成
+var memos = new Memos();
+// localStorageから読み込む
+memos.fetch();
+// モデルを表示
+memos.each(function(memo) {
+	console.log(memo.toJSON());
+});
+
+});
+</script>
+</head>
+<body>
+
+</body>
+</html>
