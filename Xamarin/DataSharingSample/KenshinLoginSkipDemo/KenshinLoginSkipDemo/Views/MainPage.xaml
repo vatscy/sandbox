@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="KenshinLoginSkipDemo.Views.MainPage" Title="{Binding Title}">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" />
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <ScrollView HorizontalOptions="Fill" VerticalOptions="Fill">
+            <StackLayout VerticalOptions="CenterAndExpand" Margin="15, 0, 15, 0">
+                <Label Text="Welcome to Xamarin Forms and Prism!" />
+                <Label Text="IDトークン：" TextColor="Black" FontSize="16" HorizontalTextAlignment="Start" />
+                <Label Text="{Binding IdToken}" TextColor="Black" FontSize="16" HorizontalOptions="StartAndExpand" LineBreakMode="CharacterWrap" />
+                <Button Text="IDトークンを取得する" FontSize="16" TextColor="Blue" BackgroundColor="Silver" Command="{Binding GetTokenCommand}" Margin="15, 10, 15, 0" />
+                <Button Text="IDトークンをクリアする" FontSize="16" TextColor="Blue" BackgroundColor="Silver" Command="{Binding ClearTokenCommand}" Margin="15, 10, 15, 0" />
+                <Button Text="IDトークンを更新する" FontSize="16" TextColor="Blue" BackgroundColor="Silver" Command="{Binding UpdateTokenCommand}" Margin="15, 10, 15, 0" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

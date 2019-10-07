@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:sharedUserId="com.carada" android:versionName="1.0" package="com.companyname.appname">
+	<uses-sdk android:minSdkVersion="21" android:targetSdkVersion="27" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.GET_ACCOUNTS" />
+	<uses-permission android:name="android.permission.GET_ACCOUNTS_PRIVILEGED" />
+	<uses-permission android:name="android.permission.ACCOUNT_MANAGER" />
+	<uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+	<application android:label="KenshinLoginSkipDemo.Android" android:icon="@mipmap/ic_launcher">
+		<service android:name="AuthenticatorService" android:enabled="true" android:exported="true">
+			<intent-filter>
+				<action android:name="android.accounts.AccountAuthenticator" />
+			</intent-filter>
+			<meta-data android:name="android.accounts.AccountAuthenticator" android:resource="@layout/authenticator" />
+		</service>
+	</application>
+</manifest>
